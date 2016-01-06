@@ -1,0 +1,663 @@
+As mentioned before, this tutorial will take you through building out a Hacker News/Reddit clone,
+which we're going to name "Flapper News". To keep things simple, we're going to kick things off with two files.
+就像之前所提的  這個教學將會帶你建構一個Flapper News的專案  為了保持簡單明瞭的作業模式  我們將會藉由 index.html 與 app.js開始專案的編輯
+
+
+With these several lines of code, we've set up a new AngularJS app and created a new controller.
+You'll notice that we declare a variable test in the controller and display its contents using the AngularJS {{}} notation.
+This is demonstrating one of the most powerful features of AngularJS, which is its two-way data-bindings.
+app.js檔案中我們建立一個angularJS的app(應用)  甚至是一個新的控制器(controller)
+你將會發現我們在控制器中宣告了一個變數"test"  然後在html 檔案中 用{{}}來顯示結果
+這個展示出了angular一個最重要且有力的特色  two-way data-bindings  資料連結
+
+
+One thing that's is going to be absolutely fundamental to our app is displaying lists. Fortunately,
+angular makes this really easy using the ng-repeat directive.
+對於我們的app  有一個是非常絕對重要的基本就是資料的條列展示   幸運的是 angular讓這件事情變得非常容易  只要我們使用ng-repeat指令
+{info} The $scope variable serves as the bridge between Angular controllers and Angular templates.
+If you want something to be accessible in the template such as a function or variable, bind it to $scope
+$scope變數可以用於建立angular controllers(控制器) 與 angular templates(頁面)的橋樑  將背後的資料傳輸到頁面顯示
+如果你想要在頁面中接受function或是變數  將變數綁在$scope
+
+
+Of course it is important to order posts by number of upvotes, and we can tap into an angular filter to make it happen.
+post in posts中的 post是posts的子集  orderBy是排序方式屬於angular filter的一種 -upvotes是將數字遞減 還有各種filter可以到angular filter中尋找
+
+
+Now that we've learned how to display lists of information with Angular, it'd really be great if we could have the user add posts.
+To do this, we first need to add a function to our $scope variable.
+為了讓user可以增加post   我們添增一條function 在 $scope上
+
+
+When this function is invoked, it will append a new post to our $scope.posts variable.
+Now we're going to have to allow the user to actually execute this function.
+當這個function被執行 他將會添加一條新的post 在$scope.posts變數上
+我們將要允許user實際地執行這個function
+
+
+Great, we can now click a button and have a new post show up!
+Let's extend this by allowing the user to actually specify what they want the title to be.
+First, we need to build out the form in HTML and sprinkle it with some Angular Magic.
+首先我們建立一個form 在html中  然後點最一些angular魔術
+
+
+Here we've created a form that encompasses our title text-box and 'Post' button.
+We are also now calling our addPost() function using the ng-submit directive,
+which has the added benefit of the user being able to press the 'enter' key to submit the form.
+Finally, we're using the ng-model directive to bind the contents of the text box to $scope.
+This will allow our controller to access the contents of the text box using $scope.title.
+
+To accompany the changes to our template, we need to make some tweaks to addPost().
+在這裡我們建立一個form  包含title的text-box以及post的按鈕
+同時呼叫addPost()功能  藉由ng-submit命令  讓使用者可以按下按鈕 提交需求
+最終我們用ng-model指令 去綁住$scope中的內容
+這會允許控制器去接收內容
+為了配合html頁面的變化  我們必須對addPost()做出一些修改
+
+
+When we add a post we are now getting the title from $scope.title, which we then clear after the post has been created.
+At this point, it makes sense to prevent the user from posting a blank title.
+當我們增加post的title時   我們然後必須清除text-box  所以增加$scope.title='';
+
+
+if(!$scope.title || $scope.title===''){return;}
+Prevent a user from submitting a post with a blank title by adding the following line to the beginning of addPost():
+預防user在沒有輸入的狀況下送出一個空白的需求
+
+
+Now that we can add some new posts, why don't we allow a user to upvote existing ones?
+To get started, lets revisit our ng-repeat directive.
+現在我們可以增加一些新的posts 為什麼我們不允許使用者upvote現在的每一個呢
+
+
+We've now added a ^ character inside a <span> tag that when clicked,
+calls the incrementUpvotes() function in our controller, but we don't have that function in our controller yet!
+我們現在增加一個^ 字元在spna中  然後按下後會呼叫incrementUpvote()功能
+但是我們的控制器中並沒有這個功能  因此必須添加
+
+
+Notice that for this function we are passing the current instance of post to the function.
+This is happening by reference so when we increment upvotes, it gets automatically reflected back to the HTML page.
+注意這個功能我們正在通過立即的post函數
+當incrementUpvotes功能使用時  html頁面會有立即的效果產生
+
+
+Ultimately, Flapper News is about sharing links to content, so lets enable users to submit links along with their titles.
+We'll start by adding a second text box to our form that a user can use to submit a link.
+We'll also add some placeholder text to make it clear which form is which:
+最終地  flapper news 的主要功能是分享內容中的link  所我讓我們允許使用者去提交申請時title可以遷入link
+我們增加另一個text box方便使用者增加link
+我們同時增加佔位符  讓使用者知道這裡可以幹嘛
+
+
+Next we're going to want to modify our addPost() function to include the link
+(notice that we aren't going to force the user to submit a link if they don't want to):
+下一步我們想要修改addPost()功能  包含link
+注意  我們不會強迫使用者去增加link功能
+
+
+It is worth noting that ng-show is merely the inverse of ng-hide.
+You can use either one for programmatically displaying or hiding elements.
+ng-show : 滿足條件的時候會把element顯示   ng-hide : 滿足條件的時候會把element隱藏
+https://chnbohwr.myds.me/wordpress/?p=112
+
+
+At the top we've included Bootstrap from a CDN.
+In the body tag, we've made use of Bootstrap's grid system to align our content in the middle of the screen.
+We've also stylized the posts list and "Add a new post" form to make things a little easier to read.
+There's a lot more that could be done on this front so feel free to mess around with more styling before (or after) you continue.
+我們引入bootstrap的cdn
+
+
+Up to this point, we've been storing important data directly in the controller. While this works, it has some disadvantages:
+
+when the controller goes out of scope, we lose the data
+that data cannot be easily accessed from other controllers or directives
+the data is difficult to mock, which is important when writing automated tests
+To rectify this problem, we're going to refactor our $scope.posts variable into a service.
+根據以上幾點  我們將重要的資料儲存在controller  但是他帶來了一些的不便
+當控制器中的scope罷工  我們會失去data
+資料不容易被其他指令及控制器使用
+資料不容易被模擬  這是非常重要的  當我們要自動測試時
+為了修正這個問題  我們將會重建  $scope.posts這個變數在service中
+
+
+My First Service... Is Really a Factory
+
+In Angular, services are declared much like controllers. Inside app.js,
+we're going to attach a new service to our flapperNews module.
+在angular中  services被宣告有點像控制器  我們將在app.js中添加一個新的service(factory)
+
+
+{info} By Angular conventions, lowerCamelCase is used for factory names that won't be new'ed.
+在angular的規範中  小寫駝峰型作為factory的names將不會被新?
+You may be wondering why we're using the keyword factory instead of service.
+你將會覺得很奇怪  為什麼我們用factory而不是service
+In angular, factory and service are related in that they are both instances of a third entity called provider.
+在angular中  factory和service是有關連的   他們都與第三方實體(provider)有關係
+Service，Factory 傻傻分不清楚
+http://ithelp.ithome.com.tw/question/10161278
+
+
+What we're doing here is creating a new object that has an array property called posts.
+We then return that variable so that our o object essentially becomes exposed to any other Angular module that cares to inject it.
+You'll note that we could have simply exported the posts array directly, however,
+by exporting an object that contains the posts array we can add new objects and methods to our services in the future.
+我們正在做的是創造一個物件  這個物件有一個陣列性質叫做posts
+當我們return一個變數  以至於我們的o 物件 本質上變成暴露在別的angular模組中 並且是小心的注入進去
+你會注意到我們可以有一個簡單的外部posts array直接地
+然後  藉由送出一個物件並且是包含posts陣列的  我們可以增加一個物件和方法(methods)在未來
+
+
+Injecting the Service
+注入service
+Our next step is to inject the service into our controller so we can access its data.
+Simply add the name of the service as a parameter to the controller we wish to access it from:
+我們的下一步是注入一個service到controller中  然後我可以可以獲得他的data
+簡單地增加一個service name 到controller中
+
+
+As you'll recall, two-way data-binding only applies to variables bound to $scope.
+To display our array of posts that exist in the posts factory (posts.posts),
+we'll need to set a scope variable in our controller to mirror the array returned from the service.
+當你去回想  two-way data-binding 只有應用在變數綁在$scope上
+為了顯示我們的陣列到posts中(posts在posts factory中)
+我們需要設定一個scope變數在控制器中  去對照array然後送回資料到service
+$scope.posts = posts.posts;  posts.posts是posts factory中的posts陣列的意思  前面的$scope.posts是這個控制器中的資料
+意思是將這個控制器中的資料傳到外部服務器去
+
+
+Now that we understand the basics of Angular templates, controllers, and services,
+we're going to start diving into some of the concepts that make client side web applications so dynamic and powerful.
+To do this, we're going to need to learn how to deal with multiple views and controllers,
+which we will accomplish using the wonderful ui-router library.
+現在我們明白了基本的angular templates controllers services
+現在我們將要開始分成一些概念  讓客戶端的應用可以有點動態及活力
+我們需要學習如何處理各個頁面及controllers的溝通
+並且藉由結合ui-router的資料庫
+
+
+Because we are adding an external module, we need to be sure to include it as a dependency in our app:
+因為我們增加一個外部模組  我們需要添加dependency到app中
+angular.module('flapperNews', ['ui.router'])   ui.router添加進去
+
+
+You may be wondering why we have chosen to use ui-router instead of the more standard ngRoute module - ui-router
+is newer and provides more flexibility and features than ngRoute. We will be using a few of these in this tutorial.
+你可能會想知道為什麼我們選擇 ui-router而不是ngRoute模組
+因為ui-router提供更多的彈性及特性
+
+
+Here we set up our home route. You'll notice that the state is given a name ('home'), URL ('/home'), and template URL ('/home.html').
+ We've also told Angular that our new state should be controlled by MainCtrl.
+ Finally, using the otherwise() method we've specified what should happen if the app receives a URL that is not defined.
+ All that's left to do is define the home.html template. Instead of creating a new file,
+ we are going to move most of our HTML into an inline template.
+再這裡我們設定了home route  你會發現state提供了name ('home'), URL ('/home'), and template URL ('/home.html')
+我們也告訴angular我們新的位置是被MainCtrl控制的
+最終  使用otherwise()方法  我們可以控制當app 接收到一個rul不是被定義的  就會傳送到我們指定的網頁中
+
+
+Using this syntax we can create templates inside our HTML and reference them in JavaScript.
+Finally, we need to tell ui-router where to place the template of the active state.
+使用這個文法 可以讓我們創造一個頁面在html中  而這個頁面會對應到javascript
+最終 我們需要告訴ui-router哪裡可以放置動態state  template
+
+
+Whenever ui-router detects a route change,
+it will place the new state's template inside the tag and initialize the controller we specified in our state configuration.
+Notice how we have removed the ng-controller="MainCtrl" line from the opening <body> tag.
+無論何時  ui-router會偵測到route的改變
+他會替換成新的template在tag中  然後初始化控制器
+注意我們會移除ng-controller="MainCtrl"
+
+
+Now that we've figured out how to create a state with ui-router,
+let's create a new one called posts that will display comments associated with a post.
+現在我們已經學會創造一個ui-router
+讓我們創造一個新的 posts 會呈現comments與post的關聯
+
+
+Notice that we define our URL with brackets around 'id'.
+This means that 'id' is actually a route parameter that will be made available to our controller.
+
+As with the home state, we're also going to need to define both a new template and a new controller.
+Because we're going to associate comments with posts,
+we want to ensure our posts factory is injected into this controller so that it may access the comments data.
+注意我們會定義URL {id}
+這個表示 id 是一個route的參數  然後可以被controller創造出來
+
+當我們創造了home 位置  我們也要需要去定義新的template和controller
+因為我們將要連接comments和posts
+我們想要確保我們的posts factory是被注入到controller導致連接comments data
+
+
+Faking comment data
+捏造comment資料
+Before we go any further, let's take a second to add some fake comment data to our posts model.
+This will help us mock up the basic comments view as well as ensure our routing is working properly.
+在我們做下一步之前   我們先花一點時間去增加一些偽造的comment data to our posts model
+這會幫助我們模擬一些comments views  也確保我們的route正常運作
+
+
+Getting the Right Post
+
+Since the posts page is about viewing the comments on a particular post,
+we need to use the id route parameter to grab the post and associated information.
+For now, we will consider the index of the post to be its id.
+We can use $stateParams to retrieve the id from the URL and load the appropriate post.
+因為這個posts 頁面是有關於觀看comments on a particular post,
+我們需要使用id route參數去抓取post以及相關的資料
+現在 我們必須考慮post的指數做為它們的id
+我們需要使用 $stateParams去從URL接收id  然後加載到適當的post
+
+
+Now that we have the post variable in our controller, we can display that information in our template.
+現在我們有post變數在controller中  我們可以顯示資料在template
+
+
+Finally, we'll add a link to the post's comment page next to the headline on the front page.
+我們增加了一個鏈結在post's comment 頁面  就在headline旁邊
+
+
+{info} When iterating over an array, the ng-repeat directive makes an $index variable available along with each item in the array.
+當疊代一個陣列時  ng-repeat指令會使 $index變數 連接陣列中的每一個項目
+
+
+Note: $stateParams service must be specified as a state controller,
+and it will be scoped so only the relevant parameters defined in that state are available on the service object.
+stateParams服務是一個state 控制器  他會被scope 所以只有相關定義在state中的參數是可取得的服務物件
+
+
+Recap
+
+In this first section, we've introduced you to some of the very basics of Angular.js including data-binding,
+controllers, services, and routing.
+In the process, we've created a skeleton web application that allows a user to create a posting that can contain a link or a title,
+then create comments that are associated with those postings.
+
+Up next we're going to learn how to use Node.js to implement a basic REST API for saving and retrieving posts and comments.
+Then we'll come back to the frontend and wire everything together into a single cohesive and functional web application.
+在第一個部分  我們已經介紹了一些基本的angular.js  包含data-binding controllers services routing
+在程序中  我們創造了網頁app的骨架  允許使用者去創造一個post並且包含title和link
+然後創造與posts有相對應關聯的comments
+
+接下來我們將會學習如何運用node.js完成一個基本的rest api
+然後我們將會回到前端去連接每一項變成有結合力和功能的web app
+
+
+Now that we have the basic front-end for our Flapper News coded up with Angular,
+we're going to start work on our backend. Because Angular is able to handle the templating and rendering,
+our backend server will mainly serve as a communication layer with our database. Over the next few sections,
+we are going to focus on modeling our data needs and creating a REST API that our Angular app can use to interact with this data.
+
+If you haven't already done so, make sure you have node, npm, and mongodb installed on your system.
+As a quick reminder, this tutorial assumes Node v0.10.31 and MongoDB 2.6.7.
+現在我們有一個基本的前端
+我們將開始後端的工作
+因為angular可以處理template和render
+我們的後端server將會成為主要與database的溝通平台
+我們會專注在modeling我們的data  然後創造rest api
+讓我們的angular app可以與data互動
+
+
+
+This will create a new folder called flapper-news and populate it with various files and folders.
+{info} We are passing the --ejs flag because we'd like like our server to use standard HTML in its templates as opposed jade.
+Theoretically we are free to use Jade if we'd like to but the front-end is already written in plain HTML.
+
+Our first order of business is to add the relevant npm modules we're going to need.
+When starting a new project, a generator will include a list of packages that are required by default.
+這個將會創造一個新的叫做flapper-news的資料夾然後放進各種檔案及資料夾
+我們安裝時透過 --ejs 旗標  因為我們想要我們的server去用標準的html 而不是jade
+理論上來說我們可以自由地使用jade 如果我們想要  但是前端已經使用了html
+
+我們的第一個工作是增加我們所需的相關npm modules
+當開始一個新專案  generator會包含一系列預設的補包
+
+
+This will automatically download any packages specified in the packages.json file and store them in the node_modules/ directory.
+Next, we are going to install Mongoose, which is a library that provides schemas and models on top of Mongo
+這個會自動的下載packages.json中指定的補包
+下一步我們會安裝mongoose
+
+
+{info} The --save flag passed to npm install instructs the program to also save the package to the packages.json file.
+This allows you (or your teammates) to automatically install missing packages with the npm install command.
+
+If you're using any version control software such as git, now is a good time to make your initial commit.
+--save旗標  會通過npm install建構出軟體然後儲存補包到package.json檔案中
+這個允許妳和妳的隊友自動的安裝遺失的補包 透過npm install 指令
+
+
+Right now the root directory of our Node project should look something like this:
+Let's go step by step and explain what each folder/file is:
+
+app.js -
+This file is the launching point for our app.
+We use it to import all other server files including modules, configure routes, open database connections,
+and just about anything else we can think of.
+這個檔案是妳的app的終端點   我們用這個輸入這種modules routes   open data connections  以及各種我們所想的到的東西
+bin/ - This directory is used to contain useful executable scripts.
+By default it contains one called www. A quick peak inside reveals that this script actually includes app.js and when invoked,
+starts our Node.js server.
+這個檔案我們用來存放有用且可執行的腳本
+預設是一個 www檔案  這個腳本可以啟動伺服器
+node_modules - This directory is home to all external modules used in the project.
+As mentioned earlier, these modules are usually installed using npm install. You will most likely not have to touch anything here.
+這個檔案是外部模捕的資料庫   就像之前所提的  這些模組通常透過npm install安裝  我們最不可能動到的檔案都存放在這裡
+package.json - This file defines a JSON object that contains various properties of our project including things
+such as name and version number. It can also defined what versions of Node are required and what modules our project depends on.
+A list of possible options can be found in npm's documentation.
+這個檔案定義成json的形式   包含有關於我們專案的各種性質  名稱 版本號  也可以定義哪種版本的node是需要的  哪些模組是我們所要的
+public/ - As the name alludes to, anything in this folder will be made publicly available by the server.
+This is where we're going to store JavaScript, CSS, images, and templates we want the client to use.
+就如名稱所說  任何在這個資料夾中的檔案將會透過server公開地建造
+這裡是我們將會儲存js css image template 各種client會用到的東西
+routes/ - This directory houses our Node controllers and is usually where most of the backend code will be stored.
+這個資料夾控管我們的node controllers  通常後端檔案都放在這
+views/ - As the name says, we will put our views here. Because we specified the --ejs flag when initializing our project,
+views will have the .ejs extension as opposed to the '.jade' extension Jade views use.
+Although views are ultimately HTML, they are slightly different than any HTML file we might specify in the public/ directory.
+Views are capable of being rendered directly by Node using the render() function and can contain logic
+that allows the server to dynamically change the content. Because we are using Angular to create a dynamic experience,
+we won't be using this feature.
+如名稱所說  我們會在這裡放置我們的views  因為我們指定  --ejs 旗標  當初始化我們的專案
+views 將會有 .ejs 的擴張   雖然 views 是html 但是他有點與放在public資料夾中的html不太一樣
+views 可以直接被Node 使用 render() 產生出來   並且包含 function以及邏輯  並且讓server可以動態地控制裡面的content
+因為我們已經使用angular去創造一個動態體驗  我們不會使用到這個特色
+
+
+models will contain our Mongoose schema definitions.
+這個資料夾會用來存放 mongoose的架構
+
+
+Importing Our Angular Project
+The final step before we begin building out the backend is to import our Angular portion into our Node.js project.
+First move the index.html file to the views/ directory.
+Because we're using the ejs engine, Node is looking for files with the .ejs extension
+so we're going to have to rename our index.html to index.ejs, replacing the existing one.
+在開始做後端之前的最後一步是輸入我們的angular部分到node.js專案中
+第一步是移動index.html到views的資料夾中
+因為我們使用ejs引擎  node會去尋找帶.ejs的資料
+所以我們必須去更改檔案的名稱 index.html變成 index.ejs  取代現在的這個
+Next, move the Angular app.js file to the public/javascripts/ directory.
+To avoid confusion with Node's app.js, also rename the Angular file to angularApp.js.
+下一步  移動app.js檔案到 public/javascripts資料夾中
+為了避免與Node's app.js混淆 一樣要更改名稱成angularApp.js
+Finally let's update the <script> tag in our index.ejs file to reflect these changes:
+然後要在index.ejs檔案更新成angularApp.js的路徑
+
+
+Now we can start our application by running npm start.
+現在在terminal輸入npm start即可啟動伺服器
+If we point our browser to http://localhost:3000 we should be greeted with our Angular application.
+然後可以在 http://localhost:3000 找到映入眼簾的 angular app
+
+
+Our first step in making a persistent data store is to configure our data models.
+To do this, we are going to be adding a schema layer on top of MongoDB using a nice library called Mongoose.
+Before we begin, let's make sure our MongoDB server is running.
+現在要創建一個處理我們資料的永久資料庫
+首先要確定mongodb伺服器正在啟動
+
+
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/news');
+This will open a connection with the news database running on our Mongo server. Now we can create our first model.
+這個會打開一個與news資料庫的連接
+
+
+ngRoute
+
+$routeProvider(服?提供者) --------- ??于下面的urlRouterProvider和stateProvider
+$route(服?) --------- ??于下面的urlRouter和state
+$routeParams(服?) --------- ??于下面的stateParams
+ng-view(指令) --------- ??于下面的ui-view
+ui.router
+
+$urlRouterProvider(服?提供者) --------- 用?配置路由重定向
+$urlRouter(服?)
+$stateProvider(服?提供者) --------- 用?配置路由
+$state(服?) --------- 用??示?前路由??信息，以及一些路由方法（如：跳?）
+$stateParams(服?) --------- 用?存?路由匹配?的??
+ui-view(指令) --------- 路由模板渲染，??的dom相??
+ui-sref(指令)
+http://www.cnblogs.com/lovesueee/p/4442509.html
+
+
+ng-repeat 也有提供幾個特殊的變數，如下面官網的資料
+{{$index}}  	iterator offset of the repeated element (0..length-1)
+http://sweeteason.pixnet.net/blog/post/42233743-angularjs-%E5%88%9D%E5%AD%B8%E8%80%85%E7%AD%86%E8%A8%98%E8%88%87%E6%95%99%E5%AD%B8-(%E4%BA%94)---%E7%B9%BC%E7%BA%8C%E6%B7%B1%E5%85%A5%E5%AD%B8
+
+
+Here we've defined a model called Post with several attributes corresponding to the type of data we'd like to store.
+We've declared our upvotes field to be initialized to 0 and we've set our comments field to an array of Comment references.
+This will allow us to use Mongoose's build in [populate()]mongoose populate method to easily retrieve
+all comments associated with a given post.
+
+Next we register that model with with the global mongoose object we imported using require() so that it
+can be used to interact with the database anywhere else mongoose is imported.
+在這裡我們定義出一個model 叫做Post和幾個我們想要儲存資料性質
+我們宣告upvotes被初始化為0   然後我們的comments對應到一個Comment的陣列
+這會允許我們使用Mongoose的build in populate()方法去簡單的獲得全部的comments
+
+下一步我們註冊一個與global mongoose物件有端的model   我們使用require() 所以可以被用來與資料庫做互動只要mongoose是被輸入的
+
+
+In Mongoose, we can create relationships between different data models using the ObjectId type.
+The ObjectId data type refers to a 12 byte MongoDB ObjectId, which is actually what is stored in the database.
+The ref property tells Mongoose what type of object the ID references and enables us to retrieve both items simultaneously.
+在mongoose中  我們可以創造一個關係  在不同的data model中 使用物件的方式
+這個物件data 對應到12 byte MongoDB 物件ID  這個物件ID是確實被存在資料庫中的
+這個東西可以使我們同時得到資料
+
+
+To keep things simple we will be defining these routes in the routes/index.js file.
+Let's begin by opening up the first route we listed, which should return a JSON list containing all posts.
+為了保持簡單  我們將會定義這些routes 在routes/index.js檔案中
+
+
+First, we need to make sure that mongoose is imported and that we have handles to the Post and Comment models.
+Then we use the express get() method to define the URL for the route (/posts) and a function to handle the request.
+Inside our request handler, we query the database for all posts.
+If and error occurred, we pass the error to an error handling function otherwise we use res.json() to send the retrieved
+posts back to the client.
+
+{info} When defining routes with Express.js, two variables will get passed to the handler function. req,
+which stands for "request", contains all the information about the request that was made to the server including data fields.
+res, which stands for "response", is the object used to respond to the client.
+首先 我們需要去確認mongoose確定被輸入   然後我們要開始處理Posts 跟 Comments的models
+然後我們習慣使用 get() 方法 去定義URL或是函數的呼叫
+在request handler   我們query所以的posts的database
+如果發生錯誤   我們通過這個錯誤可以使用otherwise 函數   然後將網頁送回client
+
+當利用Express.js定義routes
+兩個變數會被通過  res(request) 包含各種有關於request的資訊  主要負責接收以及傳送資料
+req(require)則是負責顯示這些資料
+
+
+Notice that we're using router.post instead of router.get.
+This means that we will be making a POST request to the server (not to be confused with our Flapper News 'post' models and routes).
+注意我們正在使用router.post而不是router.get
+這代表我們將會對server使用post request
+get：取得我們想要的資料。
+post：新增一項資料。（如果存在會新增一個新的）
+put：新增一項資料，如果存在就覆蓋過去。（還是只有一筆資料）。
+patch：附加新的資料在已經存在的資料後面。（資料必須已經存在，patch會擴充這項資料）
+delete：刪除資料。
+http://data-sci.info/2015/10/24/%E5%B8%B8%E8%A6%8B%E7%9A%84http-method%E7%9A%84%E4%B8%8D%E5%90%8C%E6%80%A7%E8%B3%AA%E5%88%86%E6%9E%90%EF%BC%9Agetpost%E5%92%8C%E5%85%B6%E4%BB%964%E7%A8%AEmethod%E7%9A%84%E5%B7%AE%E5%88%A5/
+
+
+
+Pre-loading Objects
+One thing you might notice about the remaining routes we need to implement is that they all require us to load a post object by ID.
+Rather than replicating the same code across several different request handler functions,
+we can use Express's param() function to automatically load an object.
+我們會注意到一件事情  有關於routes 我們需要去完成  然後他們全部要求我們去加載一個posts物件 by ID
+而不是一直重複一樣的code 透過很多不同的request handler functions,
+我們可以使用 Express's param() 函數自動地加載物件
+
+
+In this example we are using mongoose's query interface which simply provides a more flexible way of interacting with the database.
+
+Now when we define a route URL with :post in it, this function will be run first.
+Assuming the :post parameter contains an ID, our function will retrieve the post object from the database
+and attach it to the req object after which the route handler function will be called.
+在這個範例中  我們使用 mongoose's query 提供一個簡單並且更有彈性的方式去與database做互動
+
+現在當我們定義一個route URL 使用 :post 這個函數會先被run
+假設這個 :post 參數 包含一個ID  我們的function 將會從資料庫得到 post物件然後貼到req 物件
+
+
+Because the post object was retrieved using the middleware function and attached to the req object,
+all our request handler has to do is return the JSON back to the client.
+因為這個 post物件 是透過 middleware函數得到的  然後這個函數 attached to the req object
+所有我們的request handler 必須回船json 到client端
+
+
+Now let's implement the route to allow our users to upvote posts.
+We'll do this by implementing a simple method in our posts schema to add one to the upvote count then save it.
+現在讓我們完成這個route 去允許users upvoes posts
+我們透過一個簡單的方法  在posts schema 中增加一個upvote count  然後儲存他
+
+
+We've now completed all the basic routes for our posts object, now all we need to do is do the same for comments.
+Many of the same concepts apply with a few slight variations.
+
+Firstly, when creating a new comment we need to be sure to include the post ID.
+Fortunately, this is already implicitly included in the request.
+In addition to creating and saving the comment, we're going to need to attach a reference to the new comment
+that refers to our post object.
+我們已經完成全部基本的routes for our posts object 現在我們必須要做的是對comments做一樣的事情
+概念是相同的  只是變數不一樣
+首先我們創造一個新comment  我們需要確保匯入postID
+幸運的是  這個已經被重複匯入在request
+除此之外 創造和保存comment  我們現在需要去attach a reference 到新的comment   that refers to our post object
+
+
+Now, we can also take the exact same upvote method from posts and apply it to comments.
+我們也可以對comments使用額外同樣效果的upvote 方法
+
+
+Finally, we need to make a slight modification to our GET /posts/:post route
+最後我們需要去做一個小變動在 GET /posts/:post
+
+
+Using the populate() method, we can automatically load all the comments associated with that particular post.
+
+Congratulations! If you made it this far, you should now have a functioning backend.
+There is still a significant amount of additional functionality we could add, however,
+you should now understand some of the basics of Node, Express, and Mongoose.
+
+Up next, we'll learn how to use these routes in conjunction with our Angular.js
+frontend to create a web app where people can create posts and add comments.
+使用populate() 方法   我們可以自動地加載與特定post有關的全部的comments
+恭喜  如果你已經做到這邊了  你應該已經有一個具有功能性的backend
+然後  這裡仍然有一個重大的額外功能我們可以加入
+你應該明白node express mongoose的一些基本功能
+下一步  我們將會去學習如何使用這些路徑連接Angular.js的前端去創造一個web app 讓人可以創造posts和增加comments
+
+
+Our first step is going to be to query our new backend for all posts using the index route.
+We do this by adding a new function inside our posts service.
+我們的第一步是去 query我們新的後端for all posts using the index route
+藉由一個在posts service中的新function
+
+
+{info} It's important to use the angular.copy() method to create a deep copy of the returned data.
+This ensures that the $scope.posts variable in MainCtrl will also be updated, ensuring the new values are reflect in our view.
+使用angular.copy() method去創造一個深層的copy of the returned data
+這個保證 $scope.posts 變數在 MainCtrl將會被更新
+確保新的值會被反應到我們的頁面中
+
+
+In this function we're using the Angular $http service to query our posts route.
+The success() function allows us to bind function that will be executed when the request returns.
+Because our route will return a list of posts, all we need to do is copy that list to the client side posts object.
+Notice that we're using the angular.copy() function to do this as it will make our UI update properly.
+
+Now we need to call this function at an appropriate time to load the data.
+We do this by adding a property called resolve to our home state.
+在這個function中  我們使用angular $http service 去query 我們的posts route
+success() 允許我們去bind function 這個funcion將會被執行  當request returns
+因為我們的route 將會return 一個posts的list 我們必須要做的是copy that list to the client side posts object
+注意我們使用的是angular.copy() 函數去完成這個  所以會讓UI 更新得更順暢
+現在我們需要去呼叫這個function 在適合的時間加載data 藉由增加一個適合的state
+
+
+By using the resolve property in this way, we are ensuring that anytime our home state is entered,
+we will automatically query all posts from our backend before the state actually finishes loading.
+
+Now, when you fire up the server and go to http://localhost:3000/#/home, you should see all the posts that exist in the database.
+藉由使用 resolve 性質  我們可以確保 任何時候我們的home state 是被進入的
+我們將會自動搜尋全部的posts 從後端  在state實際完成登陸之前
+現在當我們啟動server 然後到http://localhost:3000/#/home位址時  妳應該可以看到全部實際在database中的post
+
+
+Up next, we need to enable creating new posts. As with loading posts,
+we're going to do this by adding another method to our posts service:
+我們需要去允許創造新的posts
+
+
+Here we use the put() method to upvote a post. When the call returns successfully,
+we update our local copy to reflect the changes. Now when you refresh the page, upvotes are persisted.
+在這裡我們使用put()method去upvote a post 當我們call returns successfully
+我們更新我們的local copy去反應到這個改變  線在當我們refresh這個頁面 upvotes是永久的
+
+
+If you remember back to when we first wrote the template, we were treating the index of a post
+in the posts array to be its id field. Now that we are actually dealing with database entries,
+we need to make sure that when you click on the "Comments" link for a post, the application directs you to the proper URL.
+
+
+{info} MongoDB uses the _id property natively, so it's usually easier to just write our application
+with that in mind rather than have to translate it to an id field, which some might consider more intuitive.
+
+When you click on the "Comments" link for a post, you should be directed to a new Angular URL that might
+look something like http://localhost:3000/#/posts/53e27c7c363cf85ad8a84723
+
+What we are going to do is have Angular automatically load the full post object with comments when we enter this state.
+Like we did with the home state, we're going to use the resolve property in the route to accomplish this.
+注意 mongodb使用 _id 性質   讓我們可以簡易的撰寫app
+但是我們必須轉換他變成id field  讓他變得比較值觀
+當我們點擊Comments 連結時   我們應該直接連到一個新的URL  類似http://localhost:3000/#/posts/53e27c7c363cf85ad8a84723
+現在我們將要做的是命令angular自動加載全部的post物件
+我們將會使用resolve性質來完成他
+
+
+The Angular ui-router detects we are entering the posts state and will then automatically query
+the server for the full post object, including comments. Only after the request has returned will the state finish loading.
+
+To get access to the post object we just retrieved in the PostsCtrl, instead of going through the posts service,
+the specific object will be directly injected into our PostsCtrl.
+Angular ui-router 偵測到我們進入了posts state 然後會自動搜尋伺服器中的全部post物件包含comments 只有在request 被return 才會結束載入程序
+為了進入post物件  我們剛得到postsctrl 而不是透過post service  特定物件會自動直接注入到postctrl
+
+
+Notice that we no longer have need to inject $stateParams into our controller.
+We're still going to want to inject posts to gain access to the methods for manipulating comments, however.
+
+When you refresh the page, you should now see the title of the post displayed.
+
+To enable adding comments, we can use the same technique we used for adding new posts.
+注意我們不再需要注入$stateParams 到我們的控制器中了
+然後  我們仍然想要去注入posts 到 gain
+當我們refresh page  你應該可以看到title of the post diesplayed
+為了允許增加comments 我們可以使用一些技巧  就如我們增加posts一樣
+
+
+Now that we have a application with a working server and client, let's add in the ability to create and authenticate users.
+To do this, we'll be using passport for authentications and JWT tokens for session management.
+This post has some great information about token vs session based authentication.
+現在我們有一個server和client應用  讓我們增加一個註冊使用者的功能
+我們將會使用passport
+
+
+
+
+
+
+
+
